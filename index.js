@@ -3,7 +3,8 @@ const fs = require("fs");
 const morgan = require("morgan");
 const cors = require("cors");
 const compression = require("compression");
-const {createBook, getAllBooks, getBook, updateBook, deleteBook} = require("./controller/bookController");
+const serverless = require("serverless-http");
+const {createBook, getAllBooks, getBook, updateBook, deleteBook} = require("./src/controller/bookController");
 
 const app = express();
 app.use(express.json());
@@ -25,7 +26,7 @@ app.use((req, res, next) => {
 });
 
 //MIDDLEWARE
-const books = JSON.parse(fs.readFileSync(`${__dirname}/data/books.json`));
+const books = JSON.parse(fs.readFileSync(`${__dirname}/src/data/books.json`));
 
 // app.get("/api/v1/books", (req, res) => {
 //   res.status(200).json({
@@ -218,3 +219,4 @@ app
 // });
 
 module.exports = app;
+module.exports.handler = serverless(app);
